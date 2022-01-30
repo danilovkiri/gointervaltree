@@ -17,7 +17,12 @@
 
 This package provides functionality for indexing a set of integer intervals, e.g. [start, end) based on [Wikipedia reference](http://en.wikipedia.org/wiki/Interval_tree).
 
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdanilovkiri%2Fgointervaltree.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdanilovkiri%2Fgointervaltree?ref=badge_large)
+
 ## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdanilovkiri%2Fgointervaltree.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdanilovkiri%2Fgointervaltree?ref=badge_shield)
+
 
 TBD
 
