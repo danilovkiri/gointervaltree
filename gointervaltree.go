@@ -77,22 +77,23 @@ func (tree *IntervalTree) Sort() {
 		return
 	}
 	sort.Slice(tree.midSortedByStart, func(i, j int) bool {
-		return tree.midSortedByStart[i].([3]interface{})[0].(int) < tree.midSortedByStart[j].([3]interface{})[0].(int)
+		return tree.midSortedByStart[i].([]interface{})[0].(int) < tree.midSortedByStart[j].([]interface{})[0].(int)
 	})
 	sort.Slice(tree.midSortedByEnd, func(i, j int) bool {
-		return tree.midSortedByEnd[i].([3]interface{})[1].(int) > tree.midSortedByEnd[j].([3]interface{})[1].(int)
+		return tree.midSortedByEnd[i].([]interface{})[1].(int) > tree.midSortedByEnd[j].([]interface{})[1].(int)
 	})
+	if tree.leftSubtree != nil {
+		tree.leftSubtree.Sort()
+	}
+	if tree.rightSubtree != nil {
+		tree.rightSubtree.Sort()
+	}
 }
 
 // Query method returns all intervals in the tree which overlap given point,
 // i.e. all (start, end, data) records, for which (start <= x < end).
 func (tree *IntervalTree) Query(x int) []interface{} {
 	var result []interface{}
-	return tree.queryMain(x, result)
-}
-
-// queryMain method is a technical method used inside Query.
-func (tree *IntervalTree) queryMain(x int, result []interface{}) []interface{} {
 	if tree.singleInterval == nil {
 		return result
 	} else if !reflect.DeepEqual(tree.singleInterval, []interface{}{0}) {
@@ -102,7 +103,7 @@ func (tree *IntervalTree) queryMain(x int, result []interface{}) []interface{} {
 		return result
 	} else if x < tree.center {
 		if tree.leftSubtree != nil {
-			result = append(result, tree.leftSubtree.queryMain(x, result)...)
+			result = append(result, tree.leftSubtree.Query(x)...)
 		}
 		for _, element := range tree.midSortedByStart {
 			if element.([]interface{})[0].(int) <= x {
@@ -121,7 +122,7 @@ func (tree *IntervalTree) queryMain(x int, result []interface{}) []interface{} {
 			}
 		}
 		if tree.rightSubtree != nil {
-			result = append(result, tree.rightSubtree.queryMain(x, result)...)
+			result = append(result, tree.rightSubtree.Query(x)...)
 		}
 		return result
 	}
