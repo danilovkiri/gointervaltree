@@ -16,10 +16,11 @@
 
 <br>
 
-> Inspired by IntervalTree
-> [realization](https://github.com/konstantint/pyliftover/blob/master/pyliftover/intervaltree.py) in Python 
+> Inspired by Centered Interval Tree
+> [implementation](https://github.com/konstantint/pyliftover/blob/master/pyliftover/intervaltree.py) in Python 
 
-This package provides functionality for indexing a set of integer intervals, e.g. [start, end) based on [Wikipedia reference](http://en.wikipedia.org/wiki/Interval_tree).
+This package provides functionality for indexing a set of integer intervals, e.g. [start, end) based on
+[Wikipedia reference](http://en.wikipedia.org/wiki/Interval_tree). No interval removal is implemented.
 
 ## License
 
