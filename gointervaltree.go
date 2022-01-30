@@ -37,8 +37,8 @@ func NewIntervalTree(min int, max int) (tree *IntervalTree) {
 	return tree
 }
 
-// addInterval method adds intervals to the tree without sorting them along the way.
-func (tree *IntervalTree) addInterval(start int, end int, data interface{}) {
+// AddInterval method adds intervals to the tree without sorting them along the way.
+func (tree *IntervalTree) AddInterval(start int, end int, data interface{}) {
 	if (end - start) <= 0 {
 		return
 	}
@@ -53,48 +53,45 @@ func (tree *IntervalTree) addInterval(start int, end int, data interface{}) {
 	}
 }
 
-// addIntervalMain method is a technical method used inside addInterval.
+// addIntervalMain method is a technical method used inside AddInterval.
 func (tree *IntervalTree) addIntervalMain(start int, end int, data interface{}) {
-
 	if end <= tree.center {
 		if tree.leftSubtree == nil {
 			tree.leftSubtree = NewIntervalTree(tree.min, tree.center)
 		}
-		tree.leftSubtree.addInterval(start, end, data)
+		tree.leftSubtree.AddInterval(start, end, data)
 	} else if start > tree.center {
 		if tree.rightSubtree == nil {
 			tree.rightSubtree = NewIntervalTree(tree.center, tree.max)
 		}
-		tree.rightSubtree.addInterval(start, end, data)
+		tree.rightSubtree.AddInterval(start, end, data)
 	} else {
 		tree.midSortedByStart = append(tree.midSortedByStart, []interface{}{start, end, data})
 		tree.midSortedByEnd = append(tree.midSortedByEnd, []interface{}{start, end, data})
 	}
 }
 
-// sort method is used to sort intervals within the tree and must be invoked after adding intervals.
-func (tree *IntervalTree) sort() {
+// Sort method is used to sort intervals within the tree and must be invoked after adding intervals.
+func (tree *IntervalTree) Sort() {
 	if tree.singleInterval == nil || !reflect.DeepEqual(tree.singleInterval, []interface{}{0}) {
 		return
 	}
-
 	sort.Slice(tree.midSortedByStart, func(i, j int) bool {
 		return tree.midSortedByStart[i].([3]interface{})[0].(int) < tree.midSortedByStart[j].([3]interface{})[0].(int)
 	})
-
 	sort.Slice(tree.midSortedByEnd, func(i, j int) bool {
 		return tree.midSortedByEnd[i].([3]interface{})[1].(int) > tree.midSortedByEnd[j].([3]interface{})[1].(int)
 	})
 }
 
-// query method returns all intervals in the tree which overlap given point,
+// Query method returns all intervals in the tree which overlap given point,
 // i.e. all (start, end, data) records, for which (start <= x < end).
-func (tree *IntervalTree) query(x int) []interface{} {
+func (tree *IntervalTree) Query(x int) []interface{} {
 	var result []interface{}
 	return tree.queryMain(x, result)
 }
 
-// queryMain method is a technical method used inside query.
+// queryMain method is a technical method used inside Query.
 func (tree *IntervalTree) queryMain(x int, result []interface{}) []interface{} {
 	if tree.singleInterval == nil {
 		return result
@@ -125,15 +122,14 @@ func (tree *IntervalTree) queryMain(x int, result []interface{}) []interface{} {
 		}
 		if tree.rightSubtree != nil {
 			result = append(result, tree.rightSubtree.queryMain(x, result)...)
-
 		}
 		return result
 	}
 }
 
-// len method represents the number of intervals maintained in the tree, zero- or negative-size intervals
+// Len method represents the number of intervals maintained in the tree, zero- or negative-size intervals
 // are not registered.
-func (tree *IntervalTree) len() int {
+func (tree *IntervalTree) Len() int {
 	if tree.singleInterval == nil {
 		return 0
 	} else if !reflect.DeepEqual(tree.singleInterval, []interface{}{0}) {
@@ -141,17 +137,17 @@ func (tree *IntervalTree) len() int {
 	} else {
 		size := len(tree.midSortedByStart)
 		if tree.leftSubtree != nil {
-			size += tree.leftSubtree.len()
+			size += tree.leftSubtree.Len()
 		}
 		if tree.rightSubtree != nil {
-			size += tree.rightSubtree.len()
+			size += tree.rightSubtree.Len()
 		}
 		return size
 	}
 }
 
-// iter method returns a slice of all intervals maintained in the tree.
-func (tree *IntervalTree) iter() []interface{} {
+// Iter method returns a slice of all intervals maintained in the tree.
+func (tree *IntervalTree) Iter() []interface{} {
 	var result []interface{}
 	if tree.singleInterval == nil {
 		return result
@@ -160,10 +156,10 @@ func (tree *IntervalTree) iter() []interface{} {
 		return result
 	} else {
 		if tree.leftSubtree != nil {
-			result = append(result, tree.leftSubtree.iter()...)
+			result = append(result, tree.leftSubtree.Iter()...)
 		}
 		if tree.rightSubtree != nil {
-			result = append(result, tree.rightSubtree.iter()...)
+			result = append(result, tree.rightSubtree.Iter()...)
 		}
 		for _, element := range tree.midSortedByStart {
 			result = append(result, element)

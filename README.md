@@ -30,7 +30,10 @@ go get github.com/danilovkiri/gointervaltree
 
 ```go
 package main
-import tree "github.com/danilovkiri/gointervaltree"
+import (
+	"fmt"
+	tree "github.com/danilovkiri/gointervaltree"
+)
 
 func main() {
 	t := tree.NewIntervalTree(0, 100)
