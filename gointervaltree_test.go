@@ -6,6 +6,41 @@ import (
 	"testing"
 )
 
+func TestNewIntervalTreeFailedBoundaries(t *testing.T) {
+	defer func() {
+		r := recover()
+		if (r != nil) != true {
+			t.Error(t.Name(), "did not panic")
+		}
+	}()
+	_ = NewIntervalTree(30, 25)
+}
+
+func TestIntervalTree_AddIntervalBad(t *testing.T) {
+	assertion := assert.New(t)
+	tree := NewIntervalTree(20, 25)
+	tree.AddInterval(23, 22, nil)
+	assertion.Equal(0, tree.Len())
+}
+
+func TestIntervalTree_QueryEmptyTree(t *testing.T) {
+	assertion := assert.New(t)
+	tree := NewIntervalTree(10, 50)
+	assertion.Equal([]interface{}(nil), tree.Query(1))
+}
+
+func TestIntervalTree_LenEmptyTree(t *testing.T) {
+	assertion := assert.New(t)
+	tree := NewIntervalTree(10, 50)
+	assertion.Equal(0, tree.Len())
+}
+
+func TestIntervalTree_IterEmptyTree(t *testing.T) {
+	assertion := assert.New(t)
+	tree := NewIntervalTree(10, 50)
+	assertion.Equal([]interface{}(nil), tree.Iter())
+}
+
 func TestNewIntervalTree(t *testing.T) {
 	assertion := assert.New(t)
 	intervals := [][]int{{10, 20}, {20, 30}, {21, 31}, {30, 40}, {45, 55}, {45, 56}, {46, 57}, {55, 56}, {58, 59}, {50, 51}}

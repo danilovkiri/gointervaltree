@@ -16,17 +16,18 @@
 
 <br>
 
-> Inspired by Centered Interval Tree
-> [implementation](https://github.com/konstantint/pyliftover/blob/master/pyliftover/intervaltree.py) in Python 
+## Description
 
-This package provides functionality for indexing a set of integer intervals, e.g. [start, end) based on
-[Wikipedia reference](http://en.wikipedia.org/wiki/Interval_tree). No interval removal is implemented.
-
-## License
-
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdanilovkiri%2Fgointervaltree.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdanilovkiri%2Fgointervaltree?ref=badge_large)
+This package provides functionality for indexing a set of integer intervals (e.g. [start, end)) with corresponding
+per-interval data based on
+[Wikipedia reference](http://en.wikipedia.org/wiki/Interval_tree). No interval removal is implemented. Inspired by
+Centered Interval Tree Python
+[implementation](https://github.com/konstantint/pyliftover/blob/master/pyliftover/intervaltree.py).
 
 ## Installation
+
+Use `go get` to install gointervaltree.
+
 ```shell
 go get github.com/danilovkiri/gointervaltree
 ```
@@ -55,3 +56,15 @@ func main() {
 	// [[32 35 [1 2 3]] [32 38 <nil>]]
 }
 ```
+
+## Contributing
+
+Any contribution is appreciated unless no tests are provided and/or updated accordingly.
+
+## License
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fdanilovkiri%2Fgointervaltree.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fdanilovkiri%2Fgointervaltree?ref=badge_large)
+
+
+
+
