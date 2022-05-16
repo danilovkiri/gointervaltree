@@ -36,17 +36,18 @@ go get github.com/danilovkiri/gointervaltree
 
 ```go
 package main
+
 import (
 	"fmt"
 	"github.com/danilovkiri/gointervaltree"
 )
 
 func main() {
-	t := gointervaltree.NewIntervalTree(0, 100)
-	t.AddInterval(1, 10, []string{"a", "b"})
-	t.AddInterval(20, 30, []bool{true, false})
-	t.AddInterval(32, 35, []int{1, 2, 3})
-	t.AddInterval(32, 38, nil)
+	t, _ := gointervaltree.NewIntervalTree(0, 100)
+	_ = t.AddInterval(1, 10, []string{"a", "b"})
+	_ = t.AddInterval(20, 30, []bool{true, false})
+	_ = t.AddInterval(32, 35, []int{1, 2, 3})
+	_ = t.AddInterval(32, 38, nil)
 	t.Sort()
 	fmt.Println(t.Len())
 	// 4

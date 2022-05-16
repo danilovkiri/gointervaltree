@@ -3,7 +3,7 @@
 package gointervaltree
 
 import (
-	"log"
+	"errors"
 	"reflect"
 	"sort"
 )
@@ -20,13 +20,13 @@ type IntervalTree struct {
 	midSortedByEnd   []interface{}
 }
 
-// NewIntervalTree method instantiates an instance of IntervalTree struct creating a node for keeping intervals.
-func NewIntervalTree(min int, max int) (tree *IntervalTree) {
-	tree = new(IntervalTree)
+// NewIntervalTree creates and returns an IntervalTree object.
+func NewIntervalTree(min, max int) (*IntervalTree, error) {
+	tree := new(IntervalTree)
 	tree.min = min
 	tree.max = max
 	if !(tree.min < tree.max) {
-		log.Panic("AssertionError: interval tree start must be numerically less than its end")
+		return nil, errors.New("interval tree start must be numerically less than its end")
 	}
 	tree.center = (min + max) / 2
 	tree.singleInterval = nil
@@ -34,13 +34,13 @@ func NewIntervalTree(min int, max int) (tree *IntervalTree) {
 	tree.rightSubtree = nil
 	tree.midSortedByStart = []interface{}{}
 	tree.midSortedByEnd = []interface{}{}
-	return tree
+	return tree, nil
 }
 
 // AddInterval method adds intervals to the tree without sorting them along the way.
-func (tree *IntervalTree) AddInterval(start int, end int, data interface{}) {
+func (tree *IntervalTree) AddInterval(start, end int, data interface{}) error {
 	if (end - start) <= 0 {
-		return
+		return errors.New("added interval has invalid coordinates")
 	}
 	if tree.singleInterval == nil {
 		tree.singleInterval = []interface{}{start, end, data}
@@ -51,20 +51,21 @@ func (tree *IntervalTree) AddInterval(start int, end int, data interface{}) {
 		tree.singleInterval = []interface{}{0}
 		tree.addIntervalMain(start, end, data)
 	}
+	return nil
 }
 
 // addIntervalMain method is a technical method used inside AddInterval.
-func (tree *IntervalTree) addIntervalMain(start int, end int, data interface{}) {
+func (tree *IntervalTree) addIntervalMain(start, end int, data interface{}) {
 	if end <= tree.center {
 		if tree.leftSubtree == nil {
-			tree.leftSubtree = NewIntervalTree(tree.min, tree.center)
+			tree.leftSubtree, _ = NewIntervalTree(tree.min, tree.center)
 		}
-		tree.leftSubtree.AddInterval(start, end, data)
+		_ = tree.leftSubtree.AddInterval(start, end, data)
 	} else if start > tree.center {
 		if tree.rightSubtree == nil {
-			tree.rightSubtree = NewIntervalTree(tree.center, tree.max)
+			tree.rightSubtree, _ = NewIntervalTree(tree.center, tree.max)
 		}
-		tree.rightSubtree.AddInterval(start, end, data)
+		_ = tree.rightSubtree.AddInterval(start, end, data)
 	} else {
 		tree.midSortedByStart = append(tree.midSortedByStart, []interface{}{start, end, data})
 		tree.midSortedByEnd = append(tree.midSortedByEnd, []interface{}{start, end, data})
@@ -78,6 +79,7 @@ func (tree *IntervalTree) Sort() {
 	}
 	sort.Slice(tree.midSortedByStart, func(i, j int) bool {
 		return tree.midSortedByStart[i].([]interface{})[0].(int) < tree.midSortedByStart[j].([]interface{})[0].(int)
+
 	})
 	sort.Slice(tree.midSortedByEnd, func(i, j int) bool {
 		return tree.midSortedByEnd[i].([]interface{})[1].(int) > tree.midSortedByEnd[j].([]interface{})[1].(int)
@@ -128,8 +130,7 @@ func (tree *IntervalTree) Query(x int) []interface{} {
 	}
 }
 
-// Len method represents the number of intervals maintained in the tree, zero- or negative-size intervals
-// are not registered.
+// Len represents the number of intervals maintained in the tree, zero- or negative-size intervals are not registered.
 func (tree *IntervalTree) Len() int {
 	if tree.singleInterval == nil {
 		return 0
