@@ -163,9 +163,7 @@ func (tree *IntervalTree) Iter() []interface{} {
 		if tree.rightSubtree != nil {
 			result = append(result, tree.rightSubtree.Iter()...)
 		}
-		for _, element := range tree.midSortedByStart {
-			result = append(result, element)
-		}
+		result = append(result, tree.midSortedByStart...)
 		return result
 	}
 }
