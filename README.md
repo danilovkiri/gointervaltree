@@ -52,9 +52,9 @@ func main() {
 	fmt.Println(t.Len())
 	// 4
 	fmt.Println(t.Iter())
-	// [[1 10 [a b]] [32 35 [1 2 3]] [32 38 <nil>] [20 30 [true false]]]
+	// [{1 10 [a b]} {32 35 [1 2 3]} {32 38 <nil>} {20 30 [true false]}]
 	fmt.Println(t.Query(33))
-	// [[32 35 [1 2 3]] [32 38 <nil>]]
+	// [{32 35 [1 2 3]} {32 38 <nil>}]
 }
 ```
 
